@@ -49,7 +49,7 @@ function updateTile(tile,num){
 }
 
 function control(e){
-    if(e.code == "ArrowLeft"){
+    if(e.code == "ArrowLeft" || e.code == "swiped-left"){
         slideLeft();
         setTwo();
     }
@@ -72,50 +72,7 @@ document.addEventListener("keyup",control);
 
 
 // For swiping
-let touchstartX = 0;
-let touchendX = 0;
-let touchstartY = 0;
-let touchendY = 0;
-    
-function checkDirection() {
-    if(Math.abs(touchendX - touchstartX) > Math.abs(touchendY - touchstartY)){
-        if (touchendX < touchstartX){
-           slideLeft();
-           setTwo()
-          }
-        if (touchendX > touchstartX) 
-        {
-          slideRight();
-          setTwo();
-        }
-    }
-    else{
-        if (touchendY < touchstartY){
-           slideDown();
-           setTwo()
-          }
-        if (touchendY > touchstartY) 
-        {
-          slideUp();
-          setTwo();
-        }
-    }
-}
-
-function touchStartControl(){
-    touchstartX = e.changedTouches[0].screenX;
-    touchendY = e.changedTouches[0].screenY;
-}
-
-function touchEndControl(){
-    touchendX = e.changedTouches[0].screenX;
-    touchendY = e.changedTouches[0].screenY;
-    checkDirection();
-}
-
-document.addEventListener('touchstart', touchStartControl);
-
-document.addEventListener('touchend', touchEndControl);
+document.addEventListener('swiped-left', control);;
 
 
 function filterZero(row){
@@ -220,8 +177,7 @@ function checkForWin(){
                 const resultDisplay = document.getElementById('result');
                 resultDisplay.innerHTML = "<h2 style=\"color: #f59575;\">You WIN </h2>"; 
                 document.removeEventListener('keyup', control);
-                document.removeEventListener('touchstart', touchStartControl);
-                document.removeEventListener('touchend', touchEndControl);
+                document.removeEventListener('swiped-left', control);
                 setTimeout(() => clear(), 3000);
             }
         }
@@ -241,8 +197,7 @@ function checkForGameOver(){
         const resultDisplay = document.getElementById('result');
         resultDisplay.innerHTML = "<h2 style=\"color: #f59575;\">Game Over <br> Your Score: " + score.toString() + "</h2>";
         document.removeEventListener('keyup', control);
-        document.removeEventListener('touchstart', touchStartControl);
-        document.removeEventListener('touchend', touchEndControl);
+        document.removeEventListener('swiped-left', control);
         setTimeout(() => clear(), 3000);
     }
 }
